@@ -1,4 +1,4 @@
-package com.example.demo.job;
+package com.example.demo.job.model;
 
 public class JobModule {
 	private Long id;
