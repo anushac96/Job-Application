@@ -2,70 +2,72 @@ package com.example.demo.job.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.job.model.JobModule;
+import com.example.demo.job.repository.JobRepository;
 import com.example.demo.job.service.JobService;
 
 @Service
-public class JobServiceImpl implements JobService{
+public class JobServiceImpl implements JobService {
 
-	private List<JobModule> jobs = new ArrayList<>();
+//	private List<JobModule> jobs = new ArrayList<>();
+
+	JobRepository jobRepo;
+
+	public JobServiceImpl(JobRepository jobRepo) {
+		super();
+		this.jobRepo = jobRepo;
+	}
 	
+
 	@Override
 	public List<JobModule> findAll() {
 		// TODO Auto-generated method stub
-		return jobs;
+		return jobRepo.findAll();
 	}
 
 	@Override
 	public void createJob(JobModule job) {
-		job.setId((long)jobs.size()+1);
-		jobs.add(job);
+		jobRepo.save(job);
 	}
 
 	@Override
 	public JobModule getJobById(Long id) {
-		for(JobModule job:jobs) {
-			if(job.getId() == id) {
-				return job;
-			}
-		}
-		return null;
+		return jobRepo.findById(id).orElse(null);
 	}
 
 	@Override
 	public boolean deleteJobById(Long id) {
-		for(JobModule job:jobs) {
-			if(job.getId() == id) {
-				return jobs.remove(job);
-			}
+		try {
+			jobRepo.deleteById(id);
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
-		return false;
 	}
 
 	@Override
 	public void createJobs(List<JobModule> jobModules) {
-		for(JobModule job: jobModules) {
-			job.setId((long)jobs.size()+1);
-			jobs.add(job);
-		}	
+		jobRepo.saveAll(jobModules);
 	}
 
-	
 	@Override
 	public boolean updateAJob(Long id, JobModule job) {
-		for(JobModule j: jobs) {
-			if(j.getId() == id) {
+		Optional<JobModule> jobOptional = jobRepo.findById(id);
+			if (jobOptional.isPresent()) {
+				JobModule j = jobOptional.get();
 				j.setDescription(job.getDescription());
 				j.setLocation(job.getLocation());
 				j.setMaxSalary(job.getMaxSalary());
 				j.setMinSalary(job.getMinSalary());
 				j.setTitle(job.getTitle());
+				jobRepo.save(j);
 				return true;
 			}
-		}
+		
 		return false;
 	}
 }

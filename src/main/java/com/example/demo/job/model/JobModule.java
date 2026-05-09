@@ -1,12 +1,26 @@
 package com.example.demo.job.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Job-Details")
 public class JobModule {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	public String title;
 	public String description;
 	public String minSalary;
 	public String maxSalary;
 	public String location;
+	
+	public JobModule() {
+		
+	}
 	
 	public JobModule(Long id, String title, String description, String minSalary, String maxSalary, String location) {
 		super();
