@@ -3,6 +3,8 @@ package com.example.demo.company.model;
 import java.util.List;
 
 import com.example.demo.job.model.JobModule;
+import com.example.demo.review.model.ReviewModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +23,11 @@ public class CompanyModule {
 	private String name;
 	private String description;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "company")
 	private List<JobModule> jobs;
 	
+	@OneToMany(mappedBy = "company")
+	private List<ReviewModel> reviews;
 	
 	public CompanyModule() {
 		super();
@@ -68,4 +72,13 @@ public class CompanyModule {
 	public void setJobs(List<JobModule> jobs) {
 		this.jobs = jobs;
 	}
+
+	public List<ReviewModel> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<ReviewModel> reviews) {
+		this.reviews = reviews;
+	}
+	
 }

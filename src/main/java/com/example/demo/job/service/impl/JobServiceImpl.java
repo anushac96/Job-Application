@@ -1,6 +1,5 @@
 package com.example.demo.job.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,15 +12,12 @@ import com.example.demo.job.service.JobService;
 @Service
 public class JobServiceImpl implements JobService {
 
-//	private List<JobModule> jobs = new ArrayList<>();
-
 	JobRepository jobRepo;
 
 	public JobServiceImpl(JobRepository jobRepo) {
 		super();
 		this.jobRepo = jobRepo;
 	}
-	
 
 	@Override
 	public List<JobModule> findAll() {
@@ -41,12 +37,11 @@ public class JobServiceImpl implements JobService {
 
 	@Override
 	public boolean deleteJobById(Long id) {
-		try {
+		if (jobRepo.existsById(id)) {
 			jobRepo.deleteById(id);
 			return true;
-		} catch (Exception e) {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -57,17 +52,17 @@ public class JobServiceImpl implements JobService {
 	@Override
 	public boolean updateAJob(Long id, JobModule job) {
 		Optional<JobModule> jobOptional = jobRepo.findById(id);
-			if (jobOptional.isPresent()) {
-				JobModule j = jobOptional.get();
-				j.setDescription(job.getDescription());
-				j.setLocation(job.getLocation());
-				j.setMaxSalary(job.getMaxSalary());
-				j.setMinSalary(job.getMinSalary());
-				j.setTitle(job.getTitle());
-				jobRepo.save(j);
-				return true;
-			}
-		
+		if (jobOptional.isPresent()) {
+			JobModule j = jobOptional.get();
+			j.setDescription(job.getDescription());
+			j.setLocation(job.getLocation());
+			j.setMaxSalary(job.getMaxSalary());
+			j.setMinSalary(job.getMinSalary());
+			j.setTitle(job.getTitle());
+			jobRepo.save(j);
+			return true;
+		}
+
 		return false;
 	}
 }

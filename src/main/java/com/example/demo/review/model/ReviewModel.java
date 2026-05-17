@@ -1,4 +1,4 @@
-package com.example.demo.job.model;
+package com.example.demo.review.model;
 
 import com.example.demo.company.model.CompanyModule;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,33 +11,32 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Job-Details")
-public class JobModule {
+@Table(name = "Review-Detail")
+public class ReviewModel {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String title;
 	private String description;
-	private String minSalary;
-	private String maxSalary;
-	private String location;
+	private double rating;
 	
 	@JsonIgnore
 	@ManyToOne
-	private CompanyModule company;
-
-	public JobModule() {
-		
-	}
+	private CompanyModule company;	// foreign key
 	
-	public JobModule(Long id, String title, String description, String minSalary, String maxSalary, String location) {
+//	review_detail table contains company_id, so review own relationship
+	
+	public ReviewModel() {
+		super();
+	}
+
+	public ReviewModel(Long id, String title, String description, double rating) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.description = description;
-		this.minSalary = minSalary;
-		this.maxSalary = maxSalary;
-		this.location = location;
+		this.rating = rating;
 	}
 
 	public Long getId() {
@@ -52,16 +51,8 @@ public class JobModule {
 		return description;
 	}
 
-	public String getMinSalary() {
-		return minSalary;
-	}
-
-	public String getMaxSalary() {
-		return maxSalary;
-	}
-
-	public String getLocation() {
-		return location;
+	public double getRating() {
+		return rating;
 	}
 
 	public void setId(Long id) {
@@ -76,19 +67,10 @@ public class JobModule {
 		this.description = description;
 	}
 
-	public void setMinSalary(String minSalary) {
-		this.minSalary = minSalary;
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 
-	public void setMaxSalary(String maxSalary) {
-		this.maxSalary = maxSalary;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	
-	
 	public CompanyModule getCompany() {
 		return company;
 	}

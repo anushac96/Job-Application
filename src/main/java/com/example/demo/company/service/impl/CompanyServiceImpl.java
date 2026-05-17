@@ -13,29 +13,26 @@ import com.example.demo.company.service.CompanyService;
 public class CompanyServiceImpl implements CompanyService {
 
 	CompanyRepository companyRepo;
-	
+
 	public CompanyServiceImpl(CompanyRepository companyRepo) {
 		super();
 		this.companyRepo = companyRepo;
 	}
-
 
 	@Override
 	public List<CompanyModule> findAll() {
 		return companyRepo.findAll();
 	}
 
-
 	@Override
 	public void createCompany(CompanyModule company) {
 		companyRepo.save(company);
 	}
 
-
 	@Override
 	public boolean updateACompany(Long id, CompanyModule company) {
-		Optional<CompanyModule>companyOptional = companyRepo.findById(id);
-		if(companyOptional.isPresent()) {
+		Optional<CompanyModule> companyOptional = companyRepo.findById(id);
+		if (companyOptional.isPresent()) {
 			CompanyModule companyModule = companyOptional.get();
 			companyModule.setDescription(company.getDescription());
 			companyModule.setJobs(company.getJobs());
@@ -46,30 +43,26 @@ public class CompanyServiceImpl implements CompanyService {
 		return false;
 	}
 
-
 	@Override
 	public void createCompanies(List<CompanyModule> companyModules) {
 		companyRepo.saveAll(companyModules);
 	}
 
-
 	@Override
 	public CompanyModule getCompanyById(Long id) {
 		Optional<CompanyModule> companyOptional = companyRepo.findById(id);
-		if(companyOptional.isPresent())
+		if (companyOptional.isPresent())
 			return companyOptional.get();
 		return null;
 	}
 
-
 	@Override
 	public boolean deleteCompanyById(Long id) {
-		try {
+		if (companyRepo.existsById(id)) {
 			companyRepo.deleteById(id);
 			return true;
-		} catch (Exception e) {
-			return false;
 		}
+		return false;
 	}
 
 }
